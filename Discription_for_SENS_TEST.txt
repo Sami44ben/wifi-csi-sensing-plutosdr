@@ -1,0 +1,23 @@
+SENS_TEST.m : Integrated Simulator & Hardware Testbench
+This script is a comprehensive testbench for the Wi-Fi sensing pipeline. Unlike the standalone hardware scripts, it features an integrated, memory-efficient offline simulator that allows you to validate signal processing logic (like CFO correction or Delay-Doppler generation) without needing active SDR hardware.
+
+How It Works
+The script operates in two primary modes dictated by the CFG.useHardware toggle:
+
+1. Hardware Mode (useHardware = true)
+Functions identically to the standard hardware pipeline. It generates an 802.11ax HE-SU burst, transmits it via the TX PlutoSDR using DMA, and processes the incoming over-the-air frames from the RX PlutoSDR to extract CSI.
+
+2. Simulation Mode (useHardware = false)
+Instead of interacting with hardware, the script builds a synthetic multipath channel entirely in software:
+
+Target Definition: You can define virtual targets with specific ranges, radial velocities, and reflectivities in the CFG.sim structure.
+
+Synthetic Channel (buildSyntheticRxStream): It takes the ideal TX waveform and applies fractional sample delays and continuous Doppler phase rotations to simulate the targets moving over time. It then injects modeled hardware impairments (like static Carrier Frequency Offset) and complex AWGN to match a target Signal-to-Noise Ratio (SNR).
+
+Virtual I/O (simRead_next): It feeds this synthetic signal into the main processing loop in discrete "frames," exactly mimicking how the sdrrx object returns data.
+
+Key Features for Analysis:
+
+reportSyntheticDD: When running in simulation mode, this function calculates and prints the expected delay (in ns) and Doppler (in Hz) for your defined targets, allowing you to mathematically verify that the Delay-Doppler plot is rendering correctly.
+
+Configurable Corrections: The script allows you to easily toggle applyCFO, applyCPE, and applySFO to observe how hardware impairments visually corrupt the CSI and DD maps when left uncorrected.
