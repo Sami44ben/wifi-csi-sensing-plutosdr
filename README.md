@@ -64,4 +64,4 @@ Save this matrix as a `.mat` file for direct loading into PyTorch or TensorFlow 
 **Author:** 
 Mohamed Elamine Benattia \\
 Hadj Mebarek ZEGRAR (https://github.com/zegrarhadjmebarek-arch) \\
-Salah Eddine ZEGRAR
+Salah Eddine ZEGRAR (https://github.com/salaheddinezegrari7-cell)
